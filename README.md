@@ -53,27 +53,46 @@ A high-performance API endpoint monitoring service built with Bun and Elysia. Mo
 
 ### Default Endpoints
 
-Configure default endpoints to monitor in `src/config/default-endpoints.ts`:
+Configure default endpoints to monitor in `src/config/default-endpoints.ts`. Here's an example with different authentication methods:
 
 ```typescript
 export const defaultEndpoints: DefaultEndpoint[] = [
   {
-    name: "My API",
-    url: "https://api.example.com/health",
+    name: "API with Query Parameter Auth",
+    url: "https://api.example.com/endpoint",
     method: "GET",
-    interval: 30000, // 30 seconds
-    timeout: 5000, // 5 seconds
-    retryCount: 3,
+    interval: 30000,
     auth: {
       type: "apiKey",
       envVar: "API_KEY",
-      location: "header",
+      location: "query", // This will add the key as ?apiKey=your_key
+      paramName: "apiKey",
+    },
+  },
+  {
+    name: "API with Header Auth",
+    url: "https://api.example.com/endpoint",
+    method: "GET",
+    auth: {
+      type: "apiKey",
+      envVar: "API_KEY",
+      location: "header", // This will add the key as X-API-Key header
       paramName: "X-API-Key",
     },
-    tags: ["production", "health"],
+  },
+  {
+    name: "API with Bearer Token",
+    url: "https://api.example.com/endpoint",
+    method: "GET",
+    auth: {
+      type: "bearer",
+      envVar: "API_TOKEN", // Will add Authorization: Bearer your_token
+    },
   },
 ];
 ```
+
+Example URL with query parameter auth: `https://api.example.com/endpoint?apiKey=your_key_here`
 
 ## 📡 API Endpoints
 
@@ -94,8 +113,11 @@ bun run dev
 # Run tests
 bun test
 
-# Build for production
-bun run build
+# Format code
+bun run format
+
+# Lint code
+bun run lint
 ```
 
 ## 🚀 Deployment

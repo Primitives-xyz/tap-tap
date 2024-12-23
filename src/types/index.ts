@@ -20,3 +20,22 @@ export interface GrafanaMetric {
   timestamp: number;
   tags: Record<string, string | number>;
 }
+
+export type EndpointBody = {
+  url: string;
+  interval?: number;
+  timeout?: number;
+  retryCount?: number;
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "HEAD";
+  headers?: Record<string, string>;
+  body?: string;
+  expectedStatusCode?: number;
+};
+
+export type AlertBody = {
+  endpoint: string;
+  maxLatency?: number;
+  minSuccessRate?: number;
+  windowSize: number;
+  notificationUrl?: string;
+};
